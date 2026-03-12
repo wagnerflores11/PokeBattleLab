@@ -13,6 +13,7 @@ export default function SearchView() {
   const [loading, setLoading] = useState(false);
   const [isFav, setIsFav] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
+  const [corrected, setCorrected] = useState("");
 
   useEffect(() => {
     const loadInitial = async () => {
@@ -34,9 +35,14 @@ export default function SearchView() {
     setLoading(true);
     setError("");
     setSelected(null);
+    setCorrected("");
+    const searched = query.trim().toLowerCase();
     try {
-      const result = await getPokemon(query.trim().toLowerCase());
+      const result = await getPokemon(searched);
       setSelected(result);
+      if (result.name !== searched && !searched.match(/^\d+$/)) {
+        setCorrected(result.name);
+      }
       const fav = await checkFavorite(result.id);
       setIsFav(fav);
     } catch {
@@ -95,6 +101,12 @@ export default function SearchView() {
 
       {loading && <p style={{ textAlign: "center", color: "#aaa" }}>Loading...</p>}
       {error && <p style={{ textAlign: "center", color: "#ef4444" }}>{error}</p>}
+
+      {corrected && (
+        <p style={{ textAlign: "center", color: "#fbbf24", marginBottom: 16, fontSize: 14 }}>
+          Showing results for <strong style={{ textTransform: "capitalize" }}>{corrected}</strong>
+        </p>
+      )}
 
       {selected && (
         <div style={{ maxWidth: 340, margin: "0 auto 32px" }}>
