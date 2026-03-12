@@ -11,7 +11,6 @@ A full stack platform for exploring Pokemon, analyzing types, comparing matchups
 ## Project Structure
 
 ```
-battledex/
 ├── backend/
 │   ├── app/
 │   │   ├── domain/        # Entities and contracts
@@ -34,7 +33,7 @@ battledex/
 ### Backend
 
 ```bash
-cd battledex/backend
+cd backend
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -47,7 +46,7 @@ API docs at `http://localhost:8000/docs`.
 ### Frontend
 
 ```bash
-cd battledex/frontend
+cd frontend
 npm install
 npm run dev
 ```
@@ -57,7 +56,7 @@ The app will be available at `http://localhost:5173`.
 ### Running Tests
 
 ```bash
-cd battledex/backend
+cd backend
 pytest -v
 ```
 
