@@ -2,6 +2,20 @@
 
 A full stack platform for exploring Pokemon, analyzing types, comparing matchups, finding counters, and saving favorites.
 
+## Screenshots
+
+### Search Pokemon
+![Search](docs/screenshots/search-pikachu.png)
+
+### Compare Pokemon
+![Compare](docs/screenshots/compare-view.png)
+
+### Type Analysis
+![Types](docs/screenshots/types-view.png)
+
+### API Documentation (Swagger)
+![API Docs](docs/screenshots/swagger-api.png)
+
 ## Stack
 
 - **Backend**: Python 3.11+ / FastAPI (clean architecture)
