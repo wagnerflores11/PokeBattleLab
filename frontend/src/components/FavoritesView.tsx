@@ -33,13 +33,14 @@ export default function FavoritesView() {
     setFavorites((prev) => prev.filter((f) => f.pokemon_id !== pokemonId));
   };
 
-  if (loading) return <p style={{ textAlign: "center", color: "#a6adc8" }}>Loading favorites...</p>;
+  if (loading) return <p style={{ textAlign: "center", color: "#aaa" }}>Loading favorites...</p>;
 
   if (favorites.length === 0) {
     return (
-      <div style={{ textAlign: "center", color: "#6c7086", padding: 40 }}>
-        <p style={{ fontSize: 48, marginBottom: 12 }}>&#9825;</p>
-        <p>No favorites yet. Search for a Pokemon and click the heart to add it.</p>
+      <div style={{ textAlign: "center", color: "#666", padding: 60 }}>
+        <p style={{ fontSize: 56, marginBottom: 16 }}>&#9825;</p>
+        <p style={{ fontSize: 16 }}>No favorites yet.</p>
+        <p style={{ color: "#888", marginTop: 8 }}>Search for a Pokemon and click the heart to add it.</p>
       </div>
     );
   }
@@ -56,14 +57,14 @@ export default function FavoritesView() {
           />
         ) : (
           <div key={f.pokemon_id} style={{
-            background: "#1e1e2e", borderRadius: 16, padding: 24,
-            color: "#cdd6f4", textAlign: "center",
+            background: "#16213e", borderRadius: 16, padding: 24,
+            color: "#eee", textAlign: "center", border: "1px solid #333",
           }}>
             <p style={{ textTransform: "capitalize" }}>{f.pokemon_name}</p>
             <button onClick={() => handleRemove(f.pokemon_id)} style={{
-              marginTop: 8, background: "#f38ba8", border: "none",
-              padding: "6px 16px", borderRadius: 8, cursor: "pointer",
-              color: "#1e1e2e", fontWeight: 600,
+              marginTop: 8, background: "#ef4444", border: "none",
+              padding: "8px 18px", borderRadius: 8, cursor: "pointer",
+              color: "#fff", fontWeight: 600,
             }}>
               Remove
             </button>

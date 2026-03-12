@@ -10,16 +10,20 @@ const TYPE_COLORS: Record<string, string> = {
   steel: "#B8B8D0", fairy: "#EE99AC",
 };
 
-function TypeBadge({ name, onClick }: { name: string; onClick?: () => void }) {
+function TypeBadge({ name, onClick, active }: { name: string; onClick?: () => void; active?: boolean }) {
   return (
     <span
       onClick={onClick}
       style={{
         background: TYPE_COLORS[name] || "#888",
-        padding: "4px 14px", borderRadius: 20, fontSize: 13,
-        color: "#fff", fontWeight: 600, textTransform: "capitalize",
+        padding: "6px 16px", borderRadius: 20, fontSize: 13,
+        color: "#fff", fontWeight: 700, textTransform: "capitalize",
         cursor: onClick ? "pointer" : "default",
         display: "inline-block",
+        textShadow: "0 1px 2px rgba(0,0,0,0.3)",
+        boxShadow: active ? `0 0 0 3px #fbbf24, 0 4px 12px ${TYPE_COLORS[name]}66` : `0 2px 4px rgba(0,0,0,0.2)`,
+        transform: active ? "scale(1.1)" : "scale(1)",
+        transition: "all 0.15s",
       }}
     >
       {name}
@@ -47,54 +51,58 @@ export default function TypesView() {
 
   return (
     <div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 24, justifyContent: "center" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 28, justifyContent: "center" }}>
         {types.filter(t => TYPE_COLORS[t]).map((t) => (
-          <TypeBadge key={t} name={t} onClick={() => handleSelect(t)} />
+          <TypeBadge key={t} name={t} onClick={() => handleSelect(t)} active={selected?.name === t} />
         ))}
       </div>
-      {loading && <p style={{ textAlign: "center", color: "#a6adc8" }}>Loading...</p>}
+      {loading && <p style={{ textAlign: "center", color: "#aaa" }}>Loading...</p>}
       {selected && (
-        <div style={{ background: "#1e1e2e", borderRadius: 16, padding: 24 }}>
-          <h3 style={{ color: "#cdd6f4", textTransform: "capitalize", textAlign: "center", marginBottom: 20 }}>
+        <div style={{ background: "#16213e", borderRadius: 16, padding: 28, border: "1px solid #333" }}>
+          <h3 style={{
+            color: TYPE_COLORS[selected.name] || "#fff",
+            textTransform: "capitalize", textAlign: "center", marginBottom: 24,
+            fontSize: 22,
+          }}>
             {selected.name} Type
           </h3>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
             <div>
-              <h4 style={{ color: "#a6e3a1", marginBottom: 8 }}>Super effective against (2x)</h4>
+              <h4 style={{ color: "#22c55e", marginBottom: 10 }}>Super effective against (2x)</h4>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {selected.double_damage_to.length ? selected.double_damage_to.map(t => <TypeBadge key={t} name={t} />) : <span style={{ color: "#6c7086" }}>None</span>}
+                {selected.double_damage_to.length ? selected.double_damage_to.map(t => <TypeBadge key={t} name={t} />) : <span style={{ color: "#666" }}>None</span>}
               </div>
             </div>
             <div>
-              <h4 style={{ color: "#f38ba8", marginBottom: 8 }}>Weak against (2x from)</h4>
+              <h4 style={{ color: "#ef4444", marginBottom: 10 }}>Weak against (2x from)</h4>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {selected.double_damage_from.length ? selected.double_damage_from.map(t => <TypeBadge key={t} name={t} />) : <span style={{ color: "#6c7086" }}>None</span>}
+                {selected.double_damage_from.length ? selected.double_damage_from.map(t => <TypeBadge key={t} name={t} />) : <span style={{ color: "#666" }}>None</span>}
               </div>
             </div>
             <div>
-              <h4 style={{ color: "#f9e2af", marginBottom: 8 }}>Not very effective (0.5x)</h4>
+              <h4 style={{ color: "#fbbf24", marginBottom: 10 }}>Not very effective (0.5x)</h4>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {selected.half_damage_to.length ? selected.half_damage_to.map(t => <TypeBadge key={t} name={t} />) : <span style={{ color: "#6c7086" }}>None</span>}
+                {selected.half_damage_to.length ? selected.half_damage_to.map(t => <TypeBadge key={t} name={t} />) : <span style={{ color: "#666" }}>None</span>}
               </div>
             </div>
             <div>
-              <h4 style={{ color: "#f9e2af", marginBottom: 8 }}>Resists (0.5x from)</h4>
+              <h4 style={{ color: "#fbbf24", marginBottom: 10 }}>Resists (0.5x from)</h4>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {selected.half_damage_from.length ? selected.half_damage_from.map(t => <TypeBadge key={t} name={t} />) : <span style={{ color: "#6c7086" }}>None</span>}
+                {selected.half_damage_from.length ? selected.half_damage_from.map(t => <TypeBadge key={t} name={t} />) : <span style={{ color: "#666" }}>None</span>}
               </div>
             </div>
             {(selected.no_damage_to.length > 0 || selected.no_damage_from.length > 0) && (
               <>
                 <div>
-                  <h4 style={{ color: "#6c7086", marginBottom: 8 }}>No effect on (0x)</h4>
+                  <h4 style={{ color: "#888", marginBottom: 10 }}>No effect on (0x)</h4>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                    {selected.no_damage_to.length ? selected.no_damage_to.map(t => <TypeBadge key={t} name={t} />) : <span style={{ color: "#6c7086" }}>None</span>}
+                    {selected.no_damage_to.length ? selected.no_damage_to.map(t => <TypeBadge key={t} name={t} />) : <span style={{ color: "#666" }}>None</span>}
                   </div>
                 </div>
                 <div>
-                  <h4 style={{ color: "#6c7086", marginBottom: 8 }}>Immune to (0x from)</h4>
+                  <h4 style={{ color: "#888", marginBottom: 10 }}>Immune to (0x from)</h4>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                    {selected.no_damage_from.length ? selected.no_damage_from.map(t => <TypeBadge key={t} name={t} />) : <span style={{ color: "#6c7086" }}>None</span>}
+                    {selected.no_damage_from.length ? selected.no_damage_from.map(t => <TypeBadge key={t} name={t} />) : <span style={{ color: "#666" }}>None</span>}
                   </div>
                 </div>
               </>
